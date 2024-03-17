@@ -326,7 +326,6 @@ struct Bikeshed_Shed_private
     struct AtomicIndex                  m_DependencyIndexHead;
     struct AtomicIndex                  m_DependencyIndexGeneration;
     struct AtomicIndex                  m_TaskIndexGeneration;
-    struct AtomicIndex                  m_TaskGeneration;
     struct AtomicIndex*                 m_ReadyHeads;
     int32_t*                            m_ReadyIndexes;
     int32_t*                            m_TaskIndexes;
@@ -426,8 +425,7 @@ struct Bikeshed_Shed_private
 #define BIKESHED_INDEX_MASK_PRIVATE       0x007fffffu
 #define BIKESHED_GENERATION_MASK_PRIVATE  0xff800000u
 
-#define BIKESHED_TASK_ID_PRIVATE(index, generation) (((Bikeshed_TaskID)(generation) << BIKESHED_GENERATION_SHIFT_PRIVATE) + index)
-#define BIKESHED_TASK_GENERATION_PRIVATE(task_id) ((int32_t)(task_id >> BIKESHED_GENERATION_SHIFT_PRIVATE))
+#define BIKESHED_NEW_TASK_ID_PRIVATE(old_task_id, index) (((old_task_id + (1u << BIKESHED_GENERATION_SHIFT_PRIVATE)) & BIKESHED_GENERATION_MASK_PRIVATE) | index)
 #define BIKESHED_TASK_INDEX_PRIVATE(task_id) ((Bikeshed_TaskIndex_private)(task_id & BIKESHED_INDEX_MASK_PRIVATE))
 
 static void Bikeshed_PoolInitialize_private(int32_t volatile* generation, int32_t volatile* head, int32_t volatile* items, uint32_t fill_count)
@@ -565,7 +563,6 @@ Bikeshed Bikeshed_Create(void* mem, uint32_t max_task_count, uint32_t max_depend
     BIKESHED_FATAL_ASSERT_PRIVATE(channel_count >= 1, return 0)
 
     Bikeshed shed                   = (Bikeshed)mem;
-    shed->m_TaskGeneration.m_Index  = 1;
     shed->m_ReadyCallback           = sync_primitive;
 
     uint8_t* p                  = (uint8_t*)mem;
@@ -645,13 +642,12 @@ int Bikeshed_CreateTasks(Bikeshed shed, uint32_t task_count, BikeShed_TaskFunc* 
         }
     } while (1);
 
-    int32_t generation = BIKESHED_ATOMICADD_PRIVATE(&shed->m_TaskGeneration.m_Index, 1);
     for (uint32_t i = 0; i < task_count; ++i)
     {
         Bikeshed_TaskIndex_private task_index   = out_task_ids[i];
-        Bikeshed_TaskID task_id                 = BIKESHED_TASK_ID_PRIVATE(task_index, generation);
-        out_task_ids[i]                         = task_id;
         struct Bikeshed_Task_private* task      = &shed->m_Tasks[task_index - 1];
+        Bikeshed_TaskID task_id                 = BIKESHED_NEW_TASK_ID_PRIVATE(task->m_TaskID, task_index);
+        out_task_ids[i]                         = task_id;
         task->m_TaskID                          = task_id;
         task->m_ChildDependencyCount            = 0;
         task->m_FirstDependencyIndex            = 0;
@@ -902,8 +898,7 @@ int Bikeshed_ExecuteOne(Bikeshed shed, uint8_t channel)
 #undef BIKESHED_GENERATION_SHIFT_PRIVATE
 #undef BIKESHED_INDEX_MASK_PRIVATE
 #undef BIKESHED_GENERATION_MASK_PRIVATE
-#undef BIKESHED_TASK_ID_PRIVATE
-#undef BIKESHED_TASK_GENERATION_PRIVATE
+#undef BIKESHED_NEW_TASK_ID_PRIVATE
 #undef BIKESHED_TASK_INDEX_PRIVATE
 
 #endif // !defined(BIKESHED_IMPLEMENTATION)

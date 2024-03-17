@@ -15,6 +15,6 @@ struct CountingTask
         nadir::AtomicAdd32(_this->execute_count, 1);
         return BIKESHED_TASK_RESULT_COMPLETE;
     }
-    long volatile*          execute_count;
+    nadir::TAtomic32*          execute_count;
 };
 

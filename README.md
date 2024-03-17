@@ -13,6 +13,13 @@ See design blogs at: https://danengelbrecht.github.io
 
 ## Version history
 
+### Version v1.0.1 17/3 2024
+
+**Release 1.0.1**
+
+### Fixes
+ - Change generation part of task id to increase per task id use. This reduces the frequency a task id is reused (thanks @thynnmas)
+
 ### Version v1.0 29/5 2019
 
 **Release 1.0**

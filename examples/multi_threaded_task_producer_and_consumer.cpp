@@ -18,7 +18,7 @@ int main(int , char** )
 {
     SetupTime();
 
-    long volatile executed_count = 0;
+    nadir::TAtomic32 executed_count = 0;
 
     const uint32_t COUNT = 4000000;
 

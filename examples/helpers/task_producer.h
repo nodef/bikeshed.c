@@ -2,6 +2,8 @@
 
 #include "counting_task.h"
 
+#define TASK_PRODUCER_BATCH_SIZE    8
+
 struct TaskProducer
 {
 

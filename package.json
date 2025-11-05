@@ -1,0 +1,15 @@
+{
+  "name": "bikeshed.c",
+  "version": "1.0.0",
+  "description": "Lock free hierarchical work scheduler; Dan Engelbrecht (2019).",
+  "keywords": ["c", "library", "scheduler", "lock-free", "hierarchical"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodef/bikeshed.c.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nodef/bikeshed.c/issues"
+  },
+  "homepage": "https://github.com/nodef/bikeshed.c#readme"
+}

@@ -4,12 +4,23 @@
 |master      | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3f4c844382cc4314ada8d8c7ac27e544)](https://app.codacy.com/app/DanEngelbrecht/bikeshed?utm_source=github.com&utm_medium=referral&utm_content=DanEngelbrecht/bikeshed&utm_campaign=Badge_Grade_Dashboard) |
 
 # bikeshed
-Lock free hierarchical work scheduler
+Lock free hierarchical work scheduler, by [Dan Engelbrecht](https://github.com/DanEngelbrecht).
 Builds with MSVC, Clang and GCC, header only, C99 compliant, MIT license.
 
 See github for latest version: https://github.com/DanEngelbrecht/bikeshed
 
 See design blogs at: https://danengelbrecht.github.io
+
+## Installation
+Run:
+```bash
+$ npm i bikeshed.c
+```
+
+And then include `bikeshed.h` as follows:
+```c
+#include "node_modules/bikeshed.c/src/bikeshed.h"
+```
 
 ## Version history
 
@@ -115,3 +126,10 @@ Test code has dependencies added as drop-in headers from
 
 Test code has dependencies added as git sub-modules from
  - https://github.com/DanEngelbrecht/nadir for threading and syncronization
+
+<br>
+<br>
+
+
+[![ORG](https://img.shields.io/badge/org-nodef-green?logo=Org)](https://nodef.github.io)
+![](https://ga-beacon.deno.dev/G-RC63DPBH3P:SH3Eq-NoQ9mwgYeHWxu7cw/github.com/nodef/bikeshed.c)

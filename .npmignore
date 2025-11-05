@@ -1,0 +1,16 @@
+examples/
+test/
+third-party/
+_config.yml
+.clang-format
+.gitmodules
+.travis.yml
+compile_cl_c99_debug.bat
+compile_cl_debug.bat
+compile_cl.bat
+compile_clang_cov.sh
+compile_clang_debug.sh
+compile_clang.sh
+find_mvsc.bat
+travis-cl.sh
+travis-clang.sh
